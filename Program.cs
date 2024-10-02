@@ -1,18 +1,30 @@
-namespace CSharpClicker.Web
+using CSharpClicker.Web.Initializers;
+
+namespace CSharpClicker.Web;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddHealthChecks();
-            var app = builder.Build();
+        ConfigureServices(builder.Services);
 
-            app.MapGet("/", () => "Hello World!");
-            app.MapHealthChecks("health-check");
+        var app = builder.Build();
 
-            app.Run();
-        }
+        app.MapGet("/", () => "Hello World!");
+        app.MapHealthChecks("health-check");
+
+        app.Run();
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddHealthChecks();
+        //services.AddIdentity<ApplicationUser, ApplicationRole>()
+        //    .AddEntityFrameworkStores<AppDbContext>()
+        //    .AddDefaultTokenProviders();
+
+        DbContextInitializer.InitializeDbContext(services);
     }
 }

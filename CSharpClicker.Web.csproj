@@ -10,10 +10,14 @@
     <Folder Include="Controllers\" />
     <Folder Include="Infrastructure.Abstractions\" />
     <Folder Include="Infrastructure.Implementations\" />
-    <Folder Include="Infrastructure.DataAccess\" />
-    <Folder Include="Domain\" />
     <Folder Include="UseCases\" />
     <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.8" />
   </ItemGroup>
 
 </Project>
