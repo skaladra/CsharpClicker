@@ -15,7 +15,6 @@ public static class DbContextInitializer
         using var serviceProvider = services.BuildServiceProvider();
         var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
-        appDbContext.Database.EnsureCreated();
         appDbContext.Database.Migrate();
 
         string GetPathToDbFile()
