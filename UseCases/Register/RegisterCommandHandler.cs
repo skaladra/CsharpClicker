@@ -20,7 +20,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Unit>
             UserName = request.UserName,
         };
 
-        var result = await userManager.CreateAsync(user, request.Password);
+        await userManager.CreateAsync(user, request.Password);
 
         return Unit.Value;
     }

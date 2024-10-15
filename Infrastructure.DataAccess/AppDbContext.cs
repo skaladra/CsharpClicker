@@ -1,10 +1,11 @@
 ﻿using CSharpClicker.Web.Domain;
+using CSharpClicker.Web.Infrastructure.Abstractions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSharpClicker.Web.Infrastructure.DataAccess;
 
-public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IAppDbContext
 {
     public DbSet<ApplicationRole> ApplicationRoles { get; private set; }
 
