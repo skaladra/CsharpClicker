@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Infrastructure.Abstractions\" />
     <Folder Include="Infrastructure.Implementations\" />
-    <Folder Include="UseCases\" />
     <Folder Include="Views\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
@@ -22,6 +21,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.8.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.1" />
   </ItemGroup>
 
 </Project>

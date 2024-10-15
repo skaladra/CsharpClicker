@@ -20,11 +20,10 @@ public class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
+        services.AddSwaggerGen();
         services.AddHealthChecks();
-        //services.AddIdentity<ApplicationUser, ApplicationRole>()
-        //    .AddEntityFrameworkStores<AppDbContext>()
-        //    .AddDefaultTokenProviders();
 
+        IdentityInitializer.InitializeIdentity(services);
         DbContextInitializer.InitializeDbContext(services);
     }
 }
