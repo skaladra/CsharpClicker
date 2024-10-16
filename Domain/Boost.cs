@@ -10,8 +10,7 @@ public class Boost
 
     public long Profit { get; set; }
 
-    public byte[] Image { get; set; } 
+    public byte[] Image { get; set; }
 
     public bool IsAuto { get; set; }
-
 }

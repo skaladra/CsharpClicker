@@ -1,7 +1,6 @@
 using CSharpClicker.Web.Infrastructure.Abstractions;
 using CSharpClicker.Web.Infrastructure.DataAccess;
 using CSharpClicker.Web.Initializers;
-using Microsoft.OpenApi.Models;
 
 namespace CSharpClicker.Web;
 
@@ -15,11 +14,21 @@ public class Program
 
         var app = builder.Build();
 
+        using var scope = app.Services.CreateScope();
+        using var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        DbContextInitializer.InitializeDbContext(appDbContext);
+
         app.UseSwagger();
         app.UseSwaggerUI();
 
+        app.UseAuthorization();
+        app.UseAuthentication();
+
         app.MapGet("/", () => "Hello World!");
         app.MapHealthChecks("health-check");
+
+        app.MapControllers();
 
         app.Run();
     }
@@ -28,12 +37,14 @@ public class Program
     {
         services.AddScoped<IAppDbContext, AppDbContext>();
 
+        DbContextInitializer.AddDbContext(services);
         IdentityInitializer.InitializeIdentity(services);
-        DbContextInitializer.InitializeDbContext(services);
 
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
         services.AddSwaggerGen();
 
         services.AddHealthChecks();
         services.AddControllersWithViews();
+        services.AddAuthentication();
     }
 }

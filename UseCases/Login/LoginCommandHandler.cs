@@ -31,7 +31,12 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Unit>
             throw new NotFoundException("User was not found.");
         }
 
-        await signInManager.PasswordSignInAsync(user, request.Password, isPersistent: true, lockoutOnFailure: false);
+        var result = await signInManager.PasswordSignInAsync(user, request.Password, isPersistent: true, lockoutOnFailure: false);
+
+        if (!result.Succeeded)
+        {
+            throw new ValidationException("Username or password is not correct.");
+        }
 
         return Unit.Value;
     }

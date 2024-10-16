@@ -1,4 +1,5 @@
 ﻿using CSharpClicker.Web.UseCases.Login;
+using CSharpClicker.Web.UseCases.Logout;
 using CSharpClicker.Web.UseCases.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,18 +19,24 @@ public class AuthController : Controller
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterCommand command)
     {
+        await mediator.Send(command);
+
         return Ok();
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginCommand command)
     {
+        await mediator.Send(command);
+
         return Ok();
     }
 
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
+        await mediator.Send(new LogoutCommand());
+
         return Ok();
     }
 }
