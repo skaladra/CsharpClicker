@@ -13,5 +13,4 @@ public class Boost
     public byte[] Image { get; set; } 
 
     public bool IsAuto { get; set; }
-
 }

@@ -1,0 +1,12 @@
+﻿@model AuthViewModel
+
+<form asp-action="Login" asp-controller="Auth" method="post">
+    <h4>Войти в аккаунт</h4>
+    <label>Имя пользователя</label>
+    <input type="text" asp-for="@Model.UserName" maxlength="30" />
+    <label>Пароль</label>
+    <input type="password" asp-for="@Model.Password" />
+    <input type="submit" value="Войти в аккаунт" />
+    <div asp-validation-summary="All"></div>
+</form>
+
