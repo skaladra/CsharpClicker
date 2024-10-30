@@ -1,5 +1,6 @@
 using CSharpClicker.Web.Infrastructure.Abstractions;
 using CSharpClicker.Web.Infrastructure.DataAccess;
+using CSharpClicker.Web.Infrastructure.Implementations;
 using CSharpClicker.Web.Initializers;
 
 namespace CSharpClicker.Web;
@@ -24,6 +25,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.UseStaticFiles();
         app.UseSwagger();
         app.UseSwaggerUI();
 
@@ -46,6 +48,7 @@ public class Program
         services.AddAuthorization();
         services.AddControllersWithViews();
 
+        services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
         services.AddScoped<IAppDbContext, AppDbContext>();
 
         IdentityInitializer.AddIdentity(services);

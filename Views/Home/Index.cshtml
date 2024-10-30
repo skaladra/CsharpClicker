@@ -2,19 +2,39 @@
 
 <div>
     <div>
+        <h3>Добро пожаловать в колонию, @Model.User.UserName</h3>
+        <h4>У тебя уже накоплено @Model.User.CurrentScore кусков руды</h4>
+        <h4>Всего ты добыл @Model.User.RecordScore кусков руды</h4>
+        <h4>С одного удара киркой ты добываешь @Model.User.ProfitPerClick кусков</h4>
+        <h4>Твои подчиненные ежесекундно добывают @Model.User.ProfitPerSecond кусков</h4>
+    </div>
+    <form asp-action="Click" asp-controller="Home" method="post">
+        <button type="submit">
+            <img src="~/ore.png" />
+        </button>
+    </form>
+    <div>
         <h3>Бусты</h3>
         @foreach (var boost in Model.Boosts)
         {
+            var userBoost = Model.User.UserBoosts.FirstOrDefault(ub => ub.BoostId == boost.Id);
+
+            var price = userBoost?.CurrentPrice ?? boost.Price;
+            var quantity = userBoost?.Quantity ?? 0;
+
             <button>
                 <h4>@boost.Title</h4>
                 <img src="data:image/png;base64, @Convert.ToBase64String(boost.Image)" />
-                <h5>Цена: @boost.Price</h5>
+                <h5>Цена: @price</h5>
                 <h5>
                     Доход: @boost.Profit
                     @if (boost.IsAuto)
                     {
                         <span> в секунду</span>
                     }
+                </h5>
+                <h5>
+                    Количество приобретенных бустов: @quantity
                 </h5>
             </button>
         }

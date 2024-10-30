@@ -183,17 +183,11 @@ namespace CSharpClicker.Web.Migrations
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     BoostId = table.Column<int>(type: "INTEGER", nullable: false),
                     CurrentPrice = table.Column<long>(type: "INTEGER", nullable: false),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserBoosts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserBoosts_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserBoosts_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -244,11 +238,6 @@ namespace CSharpClicker.Web.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserBoosts_ApplicationUserId",
-                table: "UserBoosts",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserBoosts_BoostId",

@@ -11,14 +11,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSharpClicker.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241016143738_Init")]
+    [Migration("20241030160855_Init")]
     partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("CSharpClicker.Web.Domain.ApplicationRole", b =>
                 {
@@ -152,9 +156,6 @@ namespace CSharpClicker.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("BoostId")
                         .HasColumnType("INTEGER");
 
@@ -168,8 +169,6 @@ namespace CSharpClicker.Web.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("BoostId");
 
@@ -279,10 +278,6 @@ namespace CSharpClicker.Web.Migrations
 
             modelBuilder.Entity("CSharpClicker.Web.Domain.UserBoost", b =>
                 {
-                    b.HasOne("CSharpClicker.Web.Domain.ApplicationUser", null)
-                        .WithMany("UserBoosts")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("CSharpClicker.Web.Domain.Boost", "Boost")
                         .WithMany()
                         .HasForeignKey("BoostId")
@@ -290,7 +285,7 @@ namespace CSharpClicker.Web.Migrations
                         .IsRequired();
 
                     b.HasOne("CSharpClicker.Web.Domain.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("UserBoosts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
