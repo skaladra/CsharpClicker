@@ -28,15 +28,17 @@ public class AuthController : Controller
         catch (ValidationException ex)
         {
             ModelState.AddModelError(string.Empty, ex.Message);
+
+            var viewModel = new AuthViewModel
+            {
+                UserName = command.UserName,
+                Password = command.Password,
+            };
+
+            return View(viewModel);
         }
 
-        var viewModel = new AuthViewModel
-        {
-            UserName = command.UserName,
-            Password = command.Password,
-        };
-
-        return View(viewModel);
+        return RedirectToAction(nameof(Login));
     }
 
     [HttpGet("register")]

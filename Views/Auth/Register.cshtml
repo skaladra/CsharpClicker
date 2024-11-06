@@ -1,11 +1,17 @@
 ﻿@model AuthViewModel
 
-<form asp-action="Register" asp-controller="Auth" method="post">
-    <h4>Регистрация</h4>
-    <label>Имя пользователя</label>
-    <input type="text" asp-for="@Model.UserName" maxlength="30"/>
-    <label>Пароль</label>
-    <input type="password" asp-for="@Model.Password" />
-    <input type="submit" value="Зарегистрироваться" />
-    <div asp-validation-summary="All"></div>
-</form>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="bg-light flex-column p-5">
+        <form class="d-flex flex-column align-items-center" asp-action="Register" asp-controller="Auth" method="post">
+            <h4>Регистрация</h4>
+            <label>Имя пользователя</label>
+            <input class="form-control mx-auto m-2" type="text" asp-for="@Model.UserName" maxlength="30" />
+            <label>Пароль</label>
+            <input class="form-control mx-auto m-2" type="password" asp-for="@Model.Password" />
+            <input class="btn btn-primary mx-auto" type="submit" value="Зарегистрироваться" />
+            <div asp-validation-summary="All"></div>
+        </form>
+
+        <a asp-action="Login" asp-controller="Auth">Войти в аккаунт</a>
+    </div>
+</div>

@@ -44,7 +44,8 @@ public class Program
         services.AddAutoMapper(typeof(Program).Assembly);
         services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-        services.AddAuthentication();
+        services.AddAuthentication()
+            .AddCookie(o => o.LoginPath = "/auth/login");
         services.AddAuthorization();
         services.AddControllersWithViews();
 
