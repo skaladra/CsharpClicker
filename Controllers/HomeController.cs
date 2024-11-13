@@ -32,11 +32,9 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
-    [HttpPost("click")]
-    public async Task<IActionResult> Click()
+    [HttpPost("score")]
+    public async Task AddToScore(AddPointsCommand command)
     {
-        await mediator.Send(new AddPointsCommand(Times: 1));
-
-        return RedirectToAction(nameof(Index));
+        await mediator.Send(command);
     }
 }

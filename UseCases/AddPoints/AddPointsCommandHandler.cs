@@ -22,12 +22,13 @@ public class AddPointsCommandHandler : IRequestHandler<AddPointsCommand, Unit>
         var user = await appDbContext.ApplicationUsers
             .Include(user => user.UserBoosts)
             .ThenInclude(ub => ub.Boost)
-            .FirstAsync();
+            .FirstAsync(user => user.Id == userId);
 
-        var points = user.UserBoosts.GetProfit(shouldCalculateAutoBoosts: request.IsAuto) * request.Times;
+        var autoPoints = user.UserBoosts.GetProfit(shouldCalculateAutoBoosts: true) * request.Seconds;
+        var clickedPoints = user.UserBoosts.GetProfit() * request.Clicks;
 
-        user.CurrentScore += points;
-        user.RecordScore += points;
+        user.CurrentScore += autoPoints + clickedPoints;
+        user.RecordScore += autoPoints + clickedPoints;
 
         await appDbContext.SaveChangesAsync();
 

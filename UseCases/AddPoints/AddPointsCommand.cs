@@ -2,4 +2,4 @@
 
 namespace CSharpClicker.Web.UseCases.AddPoints;
 
-public record AddPointsCommand(int Times, bool IsAuto = false) : IRequest<Unit>;
+public record AddPointsCommand(int Clicks, int Seconds) : IRequest<Unit>;
