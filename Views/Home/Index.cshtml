@@ -17,7 +17,7 @@
     </div>
 
     <div class="col justify-content-center">
-         <button id="clickitem" class="bg-transparent border-0">
+         <button id="clickitem" class="click-item bg-transparent border-0">
              <img class="w-50" src="~/ore.png" />
          </button>
     </div>
@@ -35,10 +35,11 @@
                 var price = userBoost?.CurrentPrice ?? boost.Price;
                 var quantity = userBoost?.Quantity ?? 0;
 
-                <button class="border-0 bg-secondary m-3">
+                <button class="boost-button border-0 bg-secondary m-3">
+                    <span class="boost-id" hidden>@boost.Id</span>
                     <h4>@boost.Title</h4>
                     <img src="data:image/png;base64, @Convert.ToBase64String(boost.Image)" height="100" />
-                    <h5>Цена: @price</h5>
+                    <h5 class="boost-price-string">Цена: <span class="boost-price">@price</span></h5>
                     <h5>
                         Доход: @boost.Profit
                         @if (boost.IsAuto)
@@ -47,7 +48,7 @@
                         }
                     </h5>
                     <h5>
-                        Количество приобретенных бустов: @quantity
+                        Количество приобретенных бустов: <span class="boost-quantity">@quantity</span>
                     </h5>
                 </button>
             }

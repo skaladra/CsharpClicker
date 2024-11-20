@@ -5,18 +5,63 @@ const currentScoreElement = document.getElementById("current_score");
 const recordScoreElement = document.getElementById("record_score");
 const profitPerClickElement = document.getElementById("profit_per_click");
 const profitPerSecondElement = document.getElementById("profit_per_second");
-const currentScore = Number(currentScoreElement.innerText);
-const recordScore = Number(recordScoreElement.innerText);
-const profitPerSecond = Number(profitPerSecondElement.innerText);
-const profitPerClick = Number(profitPerClickElement.innerText);
+let currentScore = Number(currentScoreElement.innerText);
+let recordScore = Number(recordScoreElement.innerText);
+let profitPerSecond = Number(profitPerSecondElement.innerText);
+let profitPerClick = Number(profitPerClickElement.innerText);
 
 
 $(document).ready(function () {
-    var clickitem = document.getElementById("clickitem");
+    const clickitem = document.getElementById("clickitem");
 
     clickitem.onclick = click;
     setInterval(addSecond, 1000)
+
+    const boostButtons = document.getElementsByClassName("boost-button");
+
+    for (let i = 0; i < boostButtons.length; i++) {
+        const boostButton = boostButtons[i];
+
+        boostButton.onclick = () => boostButtonClick(boostButton);
+    }
+
+    toggleBoostsAvailability();
 })
+
+function boostButtonClick(boostButton) {
+    if (clicks > 0 || seconds > 0) {
+        addPointsToScore();
+    }
+    buyBoost(boostButton);
+}
+
+function buyBoost(boostButton) {
+    const boostIdElement = boostButton.getElementsByClassName("boost-id")[0];
+    const boostId = boostIdElement.innerText;
+
+    $.ajax({
+        url: '/boost/buy',
+        method: 'post',
+        dataType: 'json',
+        data: { boostId: boostId },
+        success: (response) => onBuyBoostSuccess(response, boostButton),
+    });
+}
+
+function onBuyBoostSuccess(response, boostButton) {
+    const score = response["score"];
+
+    const boostPriceElement = boostButton.getElementsByClassName("boost-price")[0];
+    const boostQuantityElement = boostButton.getElementsByClassName("boost-quantity")[0];
+
+    const boostPrice = Number(response["price"]);
+    const boostQuantity = Number(response["quantity"]);
+
+    boostPriceElement.innerText = boostPrice;
+    boostQuantityElement.innerText = boostQuantity;
+
+    updateScoreFromApi(score);
+}
 
 function addSecond() {
     seconds++;
@@ -26,7 +71,7 @@ function addSecond() {
     }
 
     if (seconds > 0) {
-        updateUiScore();
+        addPointsFromSecond();
     }
 }
 
@@ -38,18 +83,40 @@ function click() {
     }
 
     if (clicks > 0) {
-        updateUiScore();
+        addPointsFromClick();
     }
 }
 
+function updateScoreFromApi(scoreData) {
+    currentScore = Number(scoreData["currentScore"]);
+    recordScore = Number(scoreData["recordScore"]);
+    profitPerClick = Number(scoreData["profitPerClick"]);
+    profitPerSecond = Number(scoreData["profitPerSecond"]);
+
+    updateUiScore();
+}
+
 function updateUiScore() {
-    var profit = clicks * profitPerClick + seconds * profitPerSecond
+    currentScoreElement.innerText = currentScore;
+    recordScoreElement.innerText = recordScore;
+    profitPerClickElement.innerText = profitPerClick;
+    profitPerSecondElement.innerText = profitPerSecond;
 
-    const uiCurrentScore = currentScore + profit;
-    const uiRecordScore = recordScore + profit;
+    toggleBoostsAvailability();
+}
 
-    currentScoreElement.innerText = uiCurrentScore;
-    recordScoreElement.innerText = uiRecordScore;
+function addPointsFromClick() {
+    currentScore += profitPerClick;
+    recordScore += profitPerClick;
+
+    updateUiScore();
+}
+
+function addPointsFromSecond() {
+    currentScore += profitPerSecond;
+    recordScore += profitPerSecond;
+
+    updateUiScore();
 }
 
 function addPointsToScore() {
@@ -58,13 +125,31 @@ function addPointsToScore() {
         method: 'post',
         dataType: 'json',
         data: { clicks: clicks, seconds: seconds },
-        success: onAddPointsSuccess(),
+        success: (response) => onAddPointsSuccess(response),
     });
 }
 
-function onAddPointsSuccess() {
+function onAddPointsSuccess(response) {
     seconds = 0;
     clicks = 0;
 
-    location.reload();
+    updateScoreFromApi(response);
+}
+
+function toggleBoostsAvailability() {
+    const boostButtons = document.getElementsByClassName("boost-button");
+
+    for (let i = 0; i < boostButtons.length; i++) {
+        const boostButton = boostButtons[i];
+
+        const boostPriceElement = boostButton.getElementsByClassName("boost-price")[0];
+        const boostPrice = Number(boostPriceElement.innerText);
+
+        if (boostPrice > currentScore) {
+            boostButton.disabled = true;
+            continue;
+        }
+
+        boostButton.disabled = false;
+    } 
 }

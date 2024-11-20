@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CSharpClicker.Web.UseCases.BuyBoost;
 
-public record BuyBoostCommand(int BoostId) : IRequest<ScoreDto>;
+public record BuyBoostCommand(int BoostId) : IRequest<ScoreBoostDto>;
