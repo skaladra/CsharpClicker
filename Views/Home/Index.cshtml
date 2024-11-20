@@ -35,10 +35,11 @@
                 var price = userBoost?.CurrentPrice ?? boost.Price;
                 var quantity = userBoost?.Quantity ?? 0;
 
-                <button class="border-0 bg-secondary m-3">
+                <button class="boost_button border-0 bg-secondary m-3">
+                    <span hidden class="boost_id">@boost.Id</span>
                     <h4>@boost.Title</h4>
                     <img src="data:image/png;base64, @Convert.ToBase64String(boost.Image)" height="100" />
-                    <h5>Цена: @price</h5>
+                    <h5>Цена: <span class="boost_price">@price</span></h5>
                     <h5>
                         Доход: @boost.Profit
                         @if (boost.IsAuto)
