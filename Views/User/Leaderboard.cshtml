@@ -1,0 +1,36 @@
+﻿@using CSharpClicker.Web.UseCases.GetLeaderboard;
+@model LeaderboardDto
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Пользователь</th>
+                <th scope="col">Рекордный счет</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Users.Count; i++)
+            {
+                var place = i + 1;
+                var user = Model.Users.ElementAt(i);
+                <tr>
+                    <th scope="row">@place</th>
+                    <td>
+                        @if (user.Avatar.Length == 0)
+                        {
+                            <img src="~/anonymous.png" height="20" width="20" />
+                        }
+                        else
+                        {
+                            <img src="data:image/png;base64, @Convert.ToBase64String(user.Avatar)" height="20" width="20" />
+                        }
+                        <span>@user.UserName</span>
+                    </td>
+                    <td>@user.RecordScore</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

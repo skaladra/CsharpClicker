@@ -10,6 +10,8 @@ public class UserDto
 
     public IReadOnlyCollection<UserBoostDto> UserBoosts { get; init; }
 
+    public byte[] Avatar { get; init; }
+
     public long ProfitPerClick { get; set; }
 
     public long ProfitPerSecond { get; set; }
