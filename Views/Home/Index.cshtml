@@ -1,5 +1,9 @@
 ﻿@model IndexViewModel
 
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
 @section styles {
     <link href="@Url.Content("~/css/index.css")" rel="stylesheet">
 }
@@ -23,28 +27,6 @@
     </div>
 
     <div class="col">
-        <div class="d-flex justify-content-between">
-            <div class="m-3">
-                @if (Model.User.Avatar.Length == 0)
-                {
-                    <img src="~/anonymous.png" height="100"/>
-                }
-                else
-                {
-                    <img src="data:image/png;base64, @Convert.ToBase64String(Model.User.Avatar)" height="100" width="100"/>
-                }
-                <form asp-action="avatar" asp-controller="user" method="post" enctype="multipart/form-data">
-                    <label for="avatar-form-control">Изменить аватар</label>
-                    <input id="avatar-form-control" type="file" class="form-control mt-3 mb-3" name="avatar" accept="image/*" />
-                    <input id="update-avatar-submit" type="submit" class="btn btn-primary" value="Обновить аватар" hidden/>
-                </form>
-            </div>
-            <form asp-action="Logout" asp-controller="Auth">
-                <input type="submit" class="btn btn-secondary" value="Выйти из аккаунта" />
-            </form>
-            
-        </div>
-
         <h3>Бусты</h3>
         <div class="d-flex">
             @foreach (var boost in Model.Boosts)
@@ -76,6 +58,5 @@
 </div>
 
 @section scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="~/js/index.js"></script>
 }

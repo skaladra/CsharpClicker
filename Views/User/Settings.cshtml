@@ -1,0 +1,27 @@
+﻿@using CSharpClicker.Web.UseCases.GetUserSettings
+
+@model UserSettingsDto;
+
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
+<div>
+    @if (Model.Avatar.Length == 0)
+    {
+        <img src="~/anonymous.png" height="100" />
+    }
+    else
+    {
+        <img src="data:image/png;base64, @Convert.ToBase64String(Model.Avatar)" height="100" width="100" />
+    }
+    <form asp-action="avatar" asp-controller="user" method="post" enctype="multipart/form-data">
+        <label for="avatar-form-control">Изменить аватар</label>
+        <input id="avatar-form-control" type="file" class="form-control mt-3 mb-3" name="avatar" accept="image/*" />
+        <input id="update-avatar-submit" type="submit" class="btn btn-primary" value="Обновить аватар" hidden />
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/js/settings.js"></script>
+}

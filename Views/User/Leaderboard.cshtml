@@ -1,8 +1,13 @@
 ﻿@using CSharpClicker.Web.UseCases.GetLeaderboard;
+@using CSharpClicker.Web.Domain
 @model LeaderboardDto
 
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
 <div>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -13,7 +18,7 @@
         <tbody>
             @for (var i = 0; i < Model.Users.Count; i++)
             {
-                var place = i + 1;
+                var place = (Model.PageInfo.Page - 1) * DomainConstants.PageSize + i + 1;
                 var user = Model.Users.ElementAt(i);
                 <tr>
                     <th scope="row">@place</th>
@@ -33,4 +38,66 @@
             }
         </tbody>
     </table>
+    <div>
+        @if(Model.PageInfo.Page != 1) {
+            <a class="m-3" asp-action="Leaderboard" asp-controller="User" asp-route-page="@(Model.PageInfo.Page - 1)">i--</a>
+        }
+
+        @if (Model.PageInfo.Total < 10)
+        {
+            for (var i = 1; i <= Model.PageInfo.Total; i++)
+            {
+                <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+            }
+        }
+        else
+        {
+            for (var i = 1; i <= 10; i++)
+            {
+                <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+            }
+        }
+
+        @if (Model.PageInfo.Total > Model.PageInfo.Page)
+        {
+            <a class="m-3" asp-action="Leaderboard" asp-controller="User" asp-route-page="@(Model.PageInfo.Page + 1)">i++</a>
+        }
+        @* else
+        {
+            var startPageDiff = Model.PageInfo.Page - 1;
+            var bottomPageDiff = Model.PageInfo.Total - Model.PageInfo.Page;
+
+            var startPageOffset = startPageDiff >= 5
+                ? 5 
+                : 1;
+
+            var bottomPageOffset = bottomPageDiff >= 5
+                ? 5
+                : Model.PageInfo.Total;
+
+            var indexStart =
+        }
+        else if (Model.PageInfo.Page >= 5 && Model.PageInfo.Total - Model.PageInfo.Page >= 5)
+        {
+            for (var i = Model.PageInfo.Page - 4; i <= Model.PageInfo.Page + 5; i++)
+            {
+                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
+            }
+        }
+        else if (Model.PageInfo.Page < 5)
+        {
+            for (var i = 1; i <= 5 + (Model.PageInfo.Page - 1); i++)
+            {
+                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
+            }
+        }
+        else if (Model.PageInfo.Total - Model.PageInfo.Page < 5)
+        {
+            for (var i = (Model.PageInfo.Page - 5) + (5 - Model.PageInfo.Total - Model.PageInfo.Page); 
+               i <= Model.PageInfo.Total; i++)
+            {
+                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
+            }
+        } *@
+    </div>
 </div>

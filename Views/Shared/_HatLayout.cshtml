@@ -1,0 +1,36 @@
+﻿@section styles {
+    @await RenderSectionAsync("styles", required: false)
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="navbar-brand" asp-action="Index" asp-controller="Home">Gothic Clicker</a>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" asp-action="Leaderboard" asp-controller="User">Лидерборд</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" asp-action="Settings" asp-controller="User">Настройки</a>
+                        </li>
+                    </ul>
+                </div>
+                <form asp-action="Logout" asp-controller="Auth">
+                    <input type="submit" class="btn btn-secondary" value="Выйти из аккаунта" />
+                </form>
+            </div>
+        </nav>
+    </header>
+    @RenderBody();
+</div>
+
+@section scripts {
+    @await RenderSectionAsync("scripts", required: false)
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+}
