@@ -23,7 +23,7 @@ public class UserController : Controller
     {
         await mediator.Send(command);
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Settings", "User");
     }
 
     [HttpGet("leaderboard")]

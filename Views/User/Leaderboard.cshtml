@@ -6,6 +6,11 @@
     Layout = "~/Views/Shared/_HatLayout.cshtml";
 }
 
+@section Styles
+{
+    <link href="~/css/leaderboard.css" rel="stylesheet"/>
+}
+
 <div>
     <table class="table">
         <thead>
@@ -47,14 +52,45 @@
         {
             for (var i = 1; i <= Model.PageInfo.Total; i++)
             {
-                <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                if (i == Model.PageInfo.Page)
+                {
+                    <a class="p-2 selected-page" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                }
+                else
+                {
+                    <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                }
             }
         }
         else
         {
-            for (var i = 1; i <= 10; i++)
+            const int HalfPageCollectionSize = 5;
+
+            var pagesFromLeft = Model.PageInfo.Page - 1;
+            var pagesFromRight = Model.PageInfo.Total - Model.PageInfo.Page;
+
+            var availablePagesFromLeft = pagesFromLeft / HalfPageCollectionSize > 0
+                ? HalfPageCollectionSize
+                : pagesFromLeft;
+            var availablePagesFromRight = pagesFromRight / HalfPageCollectionSize > 0
+                ? HalfPageCollectionSize
+                : pagesFromRight;
+
+            var pageRightOffset = HalfPageCollectionSize - availablePagesFromLeft;
+            var pageLeftOffset = HalfPageCollectionSize - availablePagesFromRight;
+
+            var pageStart = Model.PageInfo.Page - 5 + pageRightOffset - pageLeftOffset;
+
+            for (var i = pageStart; i <= pageStart + 10; i++)
             {
-                <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                if (i == Model.PageInfo.Page)
+                {
+                    <a class="p-2 selected-page" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                }
+                else
+                {
+                    <a class="m-2" asp-action="Leaderboard" asp-controller="User" asp-route-page="@i">@i</a>
+                }
             }
         }
 
@@ -62,42 +98,5 @@
         {
             <a class="m-3" asp-action="Leaderboard" asp-controller="User" asp-route-page="@(Model.PageInfo.Page + 1)">i++</a>
         }
-        @* else
-        {
-            var startPageDiff = Model.PageInfo.Page - 1;
-            var bottomPageDiff = Model.PageInfo.Total - Model.PageInfo.Page;
-
-            var startPageOffset = startPageDiff >= 5
-                ? 5 
-                : 1;
-
-            var bottomPageOffset = bottomPageDiff >= 5
-                ? 5
-                : Model.PageInfo.Total;
-
-            var indexStart =
-        }
-        else if (Model.PageInfo.Page >= 5 && Model.PageInfo.Total - Model.PageInfo.Page >= 5)
-        {
-            for (var i = Model.PageInfo.Page - 4; i <= Model.PageInfo.Page + 5; i++)
-            {
-                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
-            }
-        }
-        else if (Model.PageInfo.Page < 5)
-        {
-            for (var i = 1; i <= 5 + (Model.PageInfo.Page - 1); i++)
-            {
-                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
-            }
-        }
-        else if (Model.PageInfo.Total - Model.PageInfo.Page < 5)
-        {
-            for (var i = (Model.PageInfo.Page - 5) + (5 - Model.PageInfo.Total - Model.PageInfo.Page); 
-               i <= Model.PageInfo.Total; i++)
-            {
-                <a class="m-2" asp-action="Leaderboard" asp-controller="User">@i</a>
-            }
-        } *@
     </div>
 </div>

@@ -44,8 +44,7 @@ public class Program
         services.AddAutoMapper(typeof(Program).Assembly);
         services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-        services.AddAuthentication()
-            .AddCookie(o => o.LoginPath = "/auth/login");
+        services.AddAuthentication();
         services.AddAuthorization();
         services.AddControllersWithViews();
 
@@ -53,6 +52,12 @@ public class Program
         services.AddScoped<IAppDbContext, AppDbContext>();
 
         IdentityInitializer.AddIdentity(services);
+
+        services.ConfigureApplicationCookie(options =>
+        { 
+            options.LoginPath = "/auth/login"; 
+        });
+
         DbContextInitializer.AddAppDbContext(services);
     }
 }

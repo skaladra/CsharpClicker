@@ -20,7 +20,7 @@ public class GetLeaderboardQueryHandler : IRequestHandler<GetLeaderboardQuery, L
 
     public async Task<LeaderboardDto> Handle(GetLeaderboardQuery request, CancellationToken cancellationToken)
     {
-        var offset = request.Page - 1 * DomainConstants.PageSize;
+        var offset = (request.Page - 1) * DomainConstants.PageSize;
 
         var usersByRecordScore = await mapper.ProjectTo<LeaderboardUserDto>(appDbContext
             .ApplicationUsers
