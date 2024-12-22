@@ -34,6 +34,7 @@ public class UserController : Controller
         return View(leaderboard);
     }
 
+    [HttpGet("settings")]
     public async Task<IActionResult> Settings()
     {
         var userSettings = await mediator.Send(new GetCurrentUserSettingsQuery());
